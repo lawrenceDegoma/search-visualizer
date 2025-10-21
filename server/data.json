@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Introduction to Machine Learning",
+    "text": "Machine learning is a subset of artificial intelligence that focuses on algorithms and statistical models. It enables computers to perform specific tasks without explicit instructions, relying on patterns and inference instead. Common applications include recommendation systems, image recognition, and natural language processing.",
+    "category": "AI/ML",
+    "keywords": ["machine learning", "artificial intelligence", "algorithms", "patterns", "recommendation systems"]
+  },
+  {
+    "title": "Web Development with React",
+    "text": "React is a popular JavaScript library for building user interfaces. It uses a component-based architecture and virtual DOM for efficient rendering. React enables developers to create interactive web applications with reusable UI components and state management.",
+    "category": "Web Development",
+    "keywords": ["react", "javascript", "user interfaces", "components", "virtual dom", "web applications"]
+  },
+  {
+    "title": "Data Structures and Algorithms",
+    "text": "Understanding data structures and algorithms is fundamental to computer science. Key concepts include arrays, linked lists, trees, graphs, sorting algorithms, and search algorithms. These form the building blocks for efficient software development.",
+    "category": "Computer Science",
+    "keywords": ["data structures", "algorithms", "arrays", "linked lists", "trees", "graphs", "sorting"]
+  },
+  {
+    "title": "Database Design Principles",
+    "text": "Database design involves organizing data efficiently and ensuring data integrity. Key principles include normalization, relationships between tables, indexing for performance, and ACID properties for transactions. SQL and NoSQL databases serve different use cases.",
+    "category": "Database",
+    "keywords": ["database", "normalization", "relationships", "indexing", "sql", "nosql", "transactions"]
+  },
+  {
+    "title": "Cloud Computing and AWS",
+    "text": "Cloud computing provides on-demand access to computing resources over the internet. Amazon Web Services offers scalable infrastructure including EC2 instances, S3 storage, RDS databases, and Lambda serverless functions. Cloud services enable cost-effective and flexible application deployment.",
+    "category": "Cloud/Infrastructure",
+    "keywords": ["cloud computing", "aws", "ec2", "s3", "rds", "lambda", "serverless", "infrastructure"]
+  },
+  {
+    "title": "JavaScript ES6 Features",
+    "text": "ES6 introduced many new features to JavaScript including arrow functions, template literals, destructuring assignment, classes, modules, and promises. These features make JavaScript code more readable and maintainable while adding powerful programming constructs.",
+    "category": "Programming Languages",
+    "keywords": ["javascript", "es6", "arrow functions", "promises", "classes", "modules", "destructuring"]
+  },
+  {
+    "title": "Python for Data Science",
+    "text": "Python is widely used in data science due to libraries like NumPy, Pandas, Matplotlib, and Scikit-learn. These tools enable data manipulation, statistical analysis, visualization, and machine learning. Python's syntax makes it accessible for data analysis tasks.",
+    "category": "Data Science",
+    "keywords": ["python", "data science", "numpy", "pandas", "matplotlib", "scikit-learn", "visualization", "machine learning"]
+  },
+  {
+    "title": "Mobile App Development",
+    "text": "Mobile development includes native iOS and Android apps as well as cross-platform solutions. Technologies like React Native, Flutter, and Swift enable developers to create mobile applications. Key considerations include performance, user experience, and platform-specific guidelines.",
+    "category": "Mobile Development",
+    "keywords": ["mobile development", "ios", "android", "react native", "flutter", "swift", "cross-platform"]
+  },
+  {
+    "title": "Cybersecurity Best Practices",
+    "text": "Cybersecurity involves protecting systems and data from digital attacks. Essential practices include strong authentication, encryption, regular updates, network security, and user training. Common threats include malware, phishing, SQL injection, and social engineering attacks.",
+    "category": "Security",
+    "keywords": ["cybersecurity", "authentication", "encryption", "network security", "malware", "phishing", "sql injection"]
+  },
+  {
+    "title": "DevOps and CI/CD",
+    "text": "DevOps combines development and operations to improve collaboration and productivity. Continuous integration and continuous deployment automate testing and deployment processes. Tools like Jenkins, Docker, Kubernetes, and Git enable efficient software delivery pipelines.",
+    "category": "DevOps",
+    "keywords": ["devops", "ci/cd", "jenkins", "docker", "kubernetes", "git", "continuous integration", "deployment"]
+  }
+]
