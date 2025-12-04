@@ -75,6 +75,18 @@ app.get('/search', (req, res) => {
   res.json(results);
 });
 
+// Get all data endpoint
+app.get('/data', (req, res) => {
+  // Return all data with neutral scores for display purposes
+  const allDataWithScores = data.map((doc, index) => ({
+    ...doc,
+    score: 1.0 - (index * 0.05) // Assign decreasing scores for display
+  }));
+  
+  console.log(`Serving all ${allDataWithScores.length} documents`);
+  res.json(allDataWithScores);
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Search server running on http://localhost:${PORT}`);
 });

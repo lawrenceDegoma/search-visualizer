@@ -9,10 +9,33 @@ import './App.css'
 function App() {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
+  const [allData, setAllData] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [visualizationType, setVisualizationType] = useState('bar') // 'bar', 'network', or 'data'
   const svgRef = useRef()
+
+  // Load all data on component mount
+  useEffect(() => {
+    const loadAllData = async () => {
+      try {
+        // Fetch all data by making an empty search (you might need to modify backend)
+        const response = await axios.get('http://localhost:3001/data')
+        setAllData(response.data)
+      } catch (error) {
+        console.error('Error loading data:', error)
+        // If /data endpoint doesn't exist, try getting all data via search
+        try {
+          const response = await axios.get('http://localhost:3001/search?q=')
+          setAllData(response.data)
+        } catch (fallbackError) {
+          console.error('Error loading data via fallback:', fallbackError)
+        }
+      }
+    }
+    
+    loadAllData()
+  }, [])
 
   const handleSearch = async (e) => {
     e.preventDefault()
@@ -506,6 +529,19 @@ function App() {
         </div>
       </form>
 
+      {/* Always show available data for reference */}
+      {allData.length > 0 && (
+        <div className="data-preview-section">
+          <div className="data-preview-header">
+            <h3>Available Documents ({allData.length} total)</h3>
+            <p>Browse the dataset below to see what information you can search for</p>
+          </div>
+          <div className="data-preview-container">
+            {renderDataTable(allData)}
+          </div>
+        </div>
+      )}
+
       {results.length > 0 && (
         <div className="results-section">
           <div className="results-header">
@@ -537,7 +573,7 @@ function App() {
                 'Bar chart showing document relevance scores. Hover for details.' :
                 visualizationType === 'network' ?
                 'Network graph showing document relationships. Drag nodes to explore connections.' :
-                'Raw data table showing all search results with detailed information.'
+                'Detailed table showing search results ranked by relevance.'
               }
             </div>
             {visualizationType === 'data' ? 
