@@ -22,10 +22,18 @@ body {
 }
 
 .header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 3rem;
   padding: 2rem 0;
   border-bottom: 2px solid #dee2e6;
+}
+
+.subtext {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  font-weight: 400;
 }
 
 .header h1 {

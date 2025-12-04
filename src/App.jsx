@@ -435,7 +435,7 @@ function App() {
   }
 
   // Data Table Visualization
-  const renderDataTable = (results) => {
+  const renderDataTable = (results, showScores = true) => {
     return (
       <div className="data-table-container">
         <table className="data-table">
@@ -444,7 +444,7 @@ function App() {
               <th>Rank</th>
               <th>Title</th>
               <th>Category</th>
-              <th>Score</th>
+              {showScores && <th>Score</th>}
               <th>Keywords</th>
               <th>Text</th>
             </tr>
@@ -457,7 +457,7 @@ function App() {
                 <td className="category-cell">
                   <span className="category-badge">{result.category}</span>
                 </td>
-                <td className="score-cell">{result.score.toFixed(3)}</td>
+                {showScores && <td className="score-cell">{result.score.toFixed(3)}</td>}
                 <td className="keywords-cell">
                   {result.keywords && result.keywords.length > 0 ? (
                     <div className="keywords-list">
@@ -502,13 +502,20 @@ function App() {
     }
   }, [results, visualizationType])
 
+  const handleTitleClick = () => {
+    setQuery('')
+    setResults([])
+    setError('')
+    setVisualizationType('bar')
+  }
+
   return (
     <div className="app">
       <div className="header">
-        <h1>Search Result Visualizer</h1>
-        <p>Enter a query to see how documents rank based on relevance</p>
+        <h1 onClick={handleTitleClick} style={{ cursor: 'pointer' }}>Search Result Visualizer</h1>
       </div>
 
+      <p className="subtext">See how documents rank based on relevance</p>
       <form onSubmit={handleSearch} className="search-form">
         <div className="search-container">
           <input
@@ -529,15 +536,15 @@ function App() {
         </div>
       </form>
 
-      {/* Always show available data for reference */}
-      {allData.length > 0 && (
+      {/* Show available data for reference only when no search results */}
+      {allData.length > 0 && results.length === 0 && (
         <div className="data-preview-section">
           <div className="data-preview-header">
             <h3>Available Documents ({allData.length} total)</h3>
             <p>Browse the dataset below to see what information you can search for</p>
           </div>
           <div className="data-preview-container">
-            {renderDataTable(allData)}
+            {renderDataTable(allData, false)}
           </div>
         </div>
       )}
@@ -563,7 +570,7 @@ function App() {
                 className={`viz-button ${visualizationType === 'data' ? 'active' : ''}`}
                 onClick={() => setVisualizationType('data')}
               >
-                Data Table
+                All Data
               </button>
             </div>
           </div>
@@ -573,11 +580,11 @@ function App() {
                 'Bar chart showing document relevance scores. Hover for details.' :
                 visualizationType === 'network' ?
                 'Network graph showing document relationships. Drag nodes to explore connections.' :
-                'Detailed table showing search results ranked by relevance.'
+                'Complete dataset showing all available documents for reference.'
               }
             </div>
             {visualizationType === 'data' ? 
-              renderDataTable(results) :
+              renderDataTable(allData, false) :
               <svg ref={svgRef}></svg>
             }
           </div>

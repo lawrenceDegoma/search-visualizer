@@ -77,14 +77,14 @@ app.get('/search', (req, res) => {
 
 // Get all data endpoint
 app.get('/data', (req, res) => {
-  // Return all data with neutral scores for display purposes
-  const allDataWithScores = data.map((doc, index) => ({
-    ...doc,
-    score: 1.0 - (index * 0.05) // Assign decreasing scores for display
+  // Return all data without scores for browsing purposes
+  const allData = data.map(doc => ({
+    ...doc
+    // No score field since this is just for browsing the dataset
   }));
   
-  console.log(`Serving all ${allDataWithScores.length} documents`);
-  res.json(allDataWithScores);
+  console.log(`Serving all ${allData.length} documents`);
+  res.json(allData);
 });
 
 app.listen(PORT, () => {
