@@ -11,7 +11,7 @@ function App() {
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [visualizationType, setVisualizationType] = useState('bar') // 'bar' or 'network'
+  const [visualizationType, setVisualizationType] = useState('bar') // 'bar', 'network', or 'data'
   const svgRef = useRef()
 
   const handleSearch = async (e) => {
@@ -293,10 +293,22 @@ function App() {
 
     // Add interactivity
     nodeElements.on('mouseover', function(event, d) {
+      // Fix the node position to prevent movement on hover
+      d.fx = d.x
+      d.fy = d.y
+      
+      // Scale the node by directly changing its radius instead of using CSS transform
+      const currentRadius = sizeScale(d.score)
+      const hoverRadius = currentRadius * 1.3
+      
       d3.select(this)
+        .transition()
+        .duration(200)
+        .attr('r', hoverRadius)
         .style('stroke', '#4f46e5')
         .style('stroke-width', 4)
         .style('cursor', 'pointer')
+        
       tooltip.transition().duration(200).style('opacity', 1)
       tooltip.html(`
         <div style="font-weight: bold; color: #1f2937; margin-bottom: 8px;">${d.title}</div>
@@ -323,8 +335,18 @@ function App() {
       
       tooltip.style('left', left + 'px').style('top', top + 'px')
     })
-    .on('mouseout', function() {
+    .on('mouseout', function(event, d) {
+      // Release the fixed position to allow natural movement
+      d.fx = null
+      d.fy = null
+      
+      // Reset the node radius to original size
+      const originalRadius = sizeScale(d.score)
+      
       d3.select(this)
+        .transition()
+        .duration(200)
+        .attr('r', originalRadius)
         .style('stroke', '#fff')
         .style('stroke-width', 2)
         .style('cursor', 'pointer')
@@ -389,9 +411,58 @@ function App() {
     return tooltip
   }
 
+  // Data Table Visualization
+  const renderDataTable = (results) => {
+    return (
+      <div className="data-table-container">
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Keywords</th>
+              <th>Text</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((result, index) => (
+              <tr key={index}>
+                <td className="rank-cell">{index + 1}</td>
+                <td className="title-cell">{result.title}</td>
+                <td className="category-cell">
+                  <span className="category-badge">{result.category}</span>
+                </td>
+                <td className="score-cell">{result.score.toFixed(3)}</td>
+                <td className="keywords-cell">
+                  {result.keywords && result.keywords.length > 0 ? (
+                    <div className="keywords-list">
+                      {result.keywords.map((keyword, idx) => (
+                        <span key={idx} className="keyword-tag">{keyword}</span>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="no-keywords">No keywords</span>
+                  )}
+                </td>
+                <td className="text-cell">{result.text}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
   // Main visualization effect
   useEffect(() => {
     if (!results.length) return
+
+    if (visualizationType === 'data') {
+      // No need to clear SVG for data table
+      return
+    }
 
     const svg = d3.select(svgRef.current)
     svg.selectAll('*').remove()
@@ -399,7 +470,7 @@ function App() {
     let tooltip
     if (visualizationType === 'bar') {
       tooltip = renderBarChart(svg, results)
-    } else {
+    } else if (visualizationType === 'network') {
       tooltip = renderNetworkGraph(svg, results)
     }
 
@@ -411,7 +482,7 @@ function App() {
   return (
     <div className="app">
       <div className="header">
-        <h1>🔍 Search Result Visualizer</h1>
+        <h1>Search Result Visualizer</h1>
         <p>Enter a query to see how documents rank based on relevance</p>
       </div>
 
@@ -430,7 +501,7 @@ function App() {
             className="search-button"
             disabled={loading || !query.trim()}
           >
-            {loading ? '🔄' : '🔍'} Search
+            {loading ? '' : ''} Search
           </button>
         </div>
       </form>
@@ -444,13 +515,19 @@ function App() {
                 className={`viz-button ${visualizationType === 'bar' ? 'active' : ''}`}
                 onClick={() => setVisualizationType('bar')}
               >
-                📊 Bar Chart
+                Bar Chart
               </button>
               <button 
                 className={`viz-button ${visualizationType === 'network' ? 'active' : ''}`}
                 onClick={() => setVisualizationType('network')}
               >
-                🕸️ Network Graph
+                Network Graph
+              </button>
+              <button 
+                className={`viz-button ${visualizationType === 'data' ? 'active' : ''}`}
+                onClick={() => setVisualizationType('data')}
+              >
+                Data Table
               </button>
             </div>
           </div>
@@ -458,17 +535,22 @@ function App() {
             <div className="viz-description">
               {visualizationType === 'bar' ? 
                 'Bar chart showing document relevance scores. Hover for details.' :
-                'Network graph showing document relationships. Drag nodes to explore connections.'
+                visualizationType === 'network' ?
+                'Network graph showing document relationships. Drag nodes to explore connections.' :
+                'Raw data table showing all search results with detailed information.'
               }
             </div>
-            <svg ref={svgRef}></svg>
+            {visualizationType === 'data' ? 
+              renderDataTable(results) :
+              <svg ref={svgRef}></svg>
+            }
           </div>
         </div>
       )}
 
       {error && (
         <div className="error-message">
-          <p>⚠️ {error}</p>
+          <p>{error}</p>
         </div>
       )}
 
