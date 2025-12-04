@@ -312,7 +312,7 @@ function App() {
       tooltip.transition().duration(200).style('opacity', 1)
       tooltip.html(`
         <div style="font-weight: bold; color: #1f2937; margin-bottom: 8px;">${d.title}</div>
-        <div style="color: ${categoryColors(d.category)}; font-weight: 600; margin-bottom: 6px;">📂 ${d.category}</div>
+        <div style="color: ${categoryColors(d.category)}; font-weight: 600; margin-bottom: 6px;">${d.category}</div>
         <div style="color: #4f46e5; font-weight: 600; margin-bottom: 6px;">Score: ${d.score.toFixed(3)}</div>
         <div style="color: #6b7280; font-style: italic; font-size: 12px; line-height: 1.3;">${d.text.substring(0, 150)}...</div>
       `)
