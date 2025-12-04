@@ -82,6 +82,12 @@ search-visualizer/
 
 ### Running the Application
 
+#### Option 1: Run start script
+1. **Run script.sh**
+    ```bash
+    ./script.sh
+    ```
+
 #### Option 1: Run both servers separately
 
 1. **Start the backend server**
